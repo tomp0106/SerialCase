@@ -46,15 +46,28 @@ class SerialCtrl:
         for x in ser.serial_ports():
             print(x)
 
-    def GetDebugInfo(self):
+    def GetDebugHexInfo(self):
         #data = self.ser.readline().decode("big5")
-        data = self.ser.readline()
-        print(data,end='')
+        data=[]
+        for x in self.ser.readlines():
+            data.append(x)
+            for y in x:
+                print(hex(y)[2::].upper(), end=' ')
+
+        return data
+
+    def GetDebugTextInfo(self):
+        data=[]
+        for x in self.ser.readlines():
+            data.append(x)
+            print(x,end=' ')
+
 
         return data
 
     def SerialClose(self):
         self.ser.close()
+        print()
         print("已關閉COM port")
 
     def SerialWrite(self,words):
@@ -68,6 +81,7 @@ if __name__ == '__main__':
 
     ser=SerialCtrl()
     print(ser.serial_ports())
+
     # # ser.GetCOMPorts()
     # # COMPortNumber=input('輸入連接埠:')
     # # BuadRate = eval(input('輸入速率:'))
